@@ -15,10 +15,9 @@ export class FormComponent {
 
   inputPassword: string = '';
 
-  currentColor1 = 'grey';
   currentColor2 = 'grey';
   currentColor3 = 'grey';
-  currentColorButton = 'grey';
+  currentColor = 'grey';
 
   currentMessage = 'Enter password:';
 
@@ -33,39 +32,37 @@ export class FormComponent {
     this.inputPassword = pass;
 
     if (this.inputPassword === '') {
-      this.currentColorButton = 'grey';
-      this.currentColor1 = 'grey';
+      this.currentColor = 'grey';
       this.currentColor2 = 'grey';
       this.currentColor3 = 'grey';
     } else if (this.inputPassword.match(strongPassword)) {
-      this.currentColorButton = 'green';
-      this.currentColor1 = 'green';
+      this.currentColor = 'green';
       this.currentColor2 = 'green';
       this.currentColor3 = 'green';
       this.currentMessage = 'Strong!';
       return this.currentMessage;
     } else if (this.inputPassword.match(mediumPassword)) {
-      this.currentColorButton = 'yellow';
-      this.currentColor1 = 'yellow';
+      this.currentColor = 'yellow';
       this.currentColor2 = 'yellow';
       this.currentColor3 = 'grey';
       this.currentMessage = 'Medium!';
       return this.currentMessage;
     } else if (this.inputPassword.match(easyPassword)) {
-      this.currentColorButton = 'red';
-      this.currentColor1 = 'red';
+      this.currentColor = 'red';
       this.currentColor2 = 'grey';
       this.currentColor3 = 'grey';
       this.currentMessage = 'Easy!';
       return this.currentMessage;
     } else {
-      this.currentColorButton = 'red';
-      this.currentColor1 = 'red';
+      this.currentColor = 'red';
       this.currentColor2 = 'red';
       this.currentColor3 = 'red';
       this.currentMessage = 'Enter password:';
       return this.currentMessage;
     }
     return;
+  }
+  onSubmit() {
+    this.myForm.reset();
   }
 }
