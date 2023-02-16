@@ -1,0 +1,21 @@
+<div class="container">
+  <h2 class="second_title">{{ title }}</h2>
+  <form [formGroup]="myForm">
+    <app-password
+      type="text"
+      [formControlName]="'password'"
+      (newInputPassword)="addNewColor($event)"
+      [newMessage]="currentMessage"
+    ></app-password>
+    <app-check-zone
+      [color01]="currentColor1"
+      [color02]="currentColor2"
+      [color03]="currentColor3"
+    >
+    </app-check-zone>
+    <app-button
+      [color]="currentColorButton"
+      [newMessage]="currentMessage"
+    ></app-button>
+  </form>
+</div>

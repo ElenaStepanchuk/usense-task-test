@@ -1,75 +1,83 @@
-import { Component, OnInit } from '@angular/core';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import {
+  Component,
+  Output,
+  Input,
+  forwardRef,
+  EventEmitter,
+} from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-password',
   templateUrl: './password.component.html',
   styleUrls: ['./password.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PasswordComponent),
+      multi: true,
+    },
+  ],
 })
-export class PasswordComponent implements OnInit {
-  title: string = 'Enter password';
-  value: string = '';
-  color1: string = '';
-  color2: string = '';
-  color3: string = '';
-  message: string = '';
+export class PasswordComponent implements ControlValueAccessor {
+  @Output() newInputPassword = new EventEmitter<string>();
+  @Input() newMessage = '';
 
-  ngOnInit(): void {
-    this.color1 = 'grey';
-    this.color2 = 'grey';
-    this.color3 = 'grey';
-    this.value = '';
-    this.message = 'Enter password:';
+  addNewPassword(value: string) {
+    this.newInputPassword.emit(value);
   }
-  submitHandle() {
-    if (this.value === '' || this.value.length <= 7) {
-      Notify.failure('Password not correct, enter wrong password!');
-    } else {
+
+  onChange!: (value: string) => void;
+  onTouched!: () => void;
+
+  value: string = '';
+  color1: string = 'grey';
+  color2: string = 'grey';
+  color3: string = 'grey';
+
+  onInputValueChange(event: Event): void {
+    const strongPassword: string =
+      '(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})';
+    const mediumPassword: string =
+      '((?=.*[a-zA-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))|((?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})|(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,}))';
+    const easyPassword: string =
+      '((?=.*[a-zA-Z])(?=.{8,})|(?=.*[0-9])(?=.{8,})|(?=.*[^A-Za-z0-9])(?=.{8,}))';
+
+    const targetDivElement = event.target as HTMLInputElement;
+    const value = targetDivElement.value;
+    this.onChange(value);
+
+    if (value === '') {
       this.color1 = 'grey';
       this.color2 = 'grey';
       this.color3 = 'grey';
-      this.value = '';
-      Notify.success(this.message);
-      this.message = 'Enter password:';
-    }
-    return;
-  }
-
-  changeInputHandler() {
-    console.log(this.value);
-    console.log(this.value.length);
-
-    let strongPassword: any =
-      '(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})';
-    let mediumPassword: any =
-      '((?=.*[a-zA-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))|((?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})|(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,}))';
-    let easyPassword: any =
-      '((?=.*[a-zA-Z])(?=.{8,})|(?=.*[0-9])(?=.{8,})|(?=.*[^A-Za-z0-9])(?=.{8,}))';
-    let password: string = this.value;
-
-    if (password.match(strongPassword)) {
+    } else if (value.match(strongPassword)) {
       this.color1 = 'green';
       this.color2 = 'green';
       this.color3 = 'green';
-      let status = (this.message = 'Strong!');
-      return status;
-    } else if (password.match(mediumPassword)) {
+    } else if (value.match(mediumPassword)) {
       this.color1 = 'yellow';
       this.color2 = 'yellow';
       this.color3 = 'grey';
-      let status = (this.message = 'Medium!');
-      return status;
-    } else if (password.match(easyPassword)) {
+    } else if (value.match(easyPassword)) {
       this.color1 = 'red';
       this.color2 = 'grey';
       this.color3 = 'grey';
-      let status = (this.message = 'Easy!');
-      return status;
     } else {
       this.color1 = 'red';
       this.color2 = 'red';
       this.color3 = 'red';
     }
     return;
+  }
+
+  writeValue(value: string): void {
+    this.value = value;
+  }
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onChange = fn;
   }
 }
