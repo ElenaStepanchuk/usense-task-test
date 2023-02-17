@@ -1,6 +1,6 @@
 <div class="container">
   <h2 class="second_title">{{ title }}</h2>
-  <form [formGroup]="myForm" (submit)="onSubmit()">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
     <app-password
       type="text"
       [color]="currentColor"

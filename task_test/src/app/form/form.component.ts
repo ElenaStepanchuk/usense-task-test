@@ -7,13 +7,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent {
-  myForm = new FormGroup({
-    password: new FormControl('', [Validators.required]),
+  myForm: FormGroup = new FormGroup({
+    password: new FormControl('', Validators.required),
   });
 
   title: string = 'Enter password';
-
-  inputPassword: string = '';
 
   currentColor2 = 'grey';
   currentColor3 = 'grey';
@@ -29,36 +27,30 @@ export class FormComponent {
     const easyPassword: string =
       '((?=.*[a-zA-Z])(?=.{8,})|(?=.*[0-9])(?=.{8,})|(?=.*[^A-Za-z0-9])(?=.{8,}))';
 
-    this.inputPassword = pass;
-
-    if (this.inputPassword === '') {
+    if (pass === '') {
       this.currentColor = 'grey';
       this.currentColor2 = 'grey';
       this.currentColor3 = 'grey';
-    } else if (this.inputPassword.match(strongPassword)) {
+    } else if (pass.match(strongPassword)) {
       this.currentColor = 'green';
       this.currentColor2 = 'green';
       this.currentColor3 = 'green';
       this.currentMessage = 'Strong!';
-      return this.currentMessage;
-    } else if (this.inputPassword.match(mediumPassword)) {
+    } else if (pass.match(mediumPassword)) {
       this.currentColor = 'yellow';
       this.currentColor2 = 'yellow';
       this.currentColor3 = 'grey';
       this.currentMessage = 'Medium!';
-      return this.currentMessage;
-    } else if (this.inputPassword.match(easyPassword)) {
+    } else if (pass.match(easyPassword)) {
       this.currentColor = 'red';
       this.currentColor2 = 'grey';
       this.currentColor3 = 'grey';
       this.currentMessage = 'Easy!';
-      return this.currentMessage;
     } else {
       this.currentColor = 'red';
       this.currentColor2 = 'red';
       this.currentColor3 = 'red';
       this.currentMessage = 'Enter password:';
-      return this.currentMessage;
     }
     return;
   }
