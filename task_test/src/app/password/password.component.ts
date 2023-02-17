@@ -33,7 +33,6 @@ export class PasswordComponent implements ControlValueAccessor {
     const value = targetDivElement.value;
     this.onChange(value);
     this.newInputPassword.emit(value);
-    console.log(value);
   }
 
   writeValue(value: string): void {
